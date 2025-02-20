@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save
+
 from django.dispatch import receiver
 
 
@@ -48,6 +49,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         return self.email
+    
+    class Meta:
+        verbose_name = 'User' # To display the name of this model in the admin panel
+    
     
 
 class Profile(models.Model):

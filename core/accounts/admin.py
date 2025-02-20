@@ -10,6 +10,8 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ("email", "is_superuser", "is_active", "is_verified")
     search_fields = ("email",)
     ordering = ("email",)
+    date_hierarchy = "created_date"
+    empty_value_display = "-empty-"
     fieldsets = (
         (
             "Authentication",

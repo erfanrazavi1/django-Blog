@@ -7,6 +7,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = [
         "author",
         "title",
+        "image",
         "status",
         "category",
         "created_date",
@@ -16,6 +17,8 @@ class PostAdmin(admin.ModelAdmin):
         "content",
         "title",
     )
+    date_hierarchy = "created_date"
+    empty_value_display = "-empty-"
 
 
 admin.site.register(Post, PostAdmin)
