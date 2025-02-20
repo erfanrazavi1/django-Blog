@@ -6,7 +6,7 @@ from accounts.models import CustomUser, Profile
 
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ("email", "is_superuser", "is_active", "is_verified")
+    list_display = ("email", "phone", "is_superuser", "is_active", "is_verified")
     list_filter = ("email", "is_superuser", "is_active", "is_verified")
     search_fields = ("email",)
     ordering = ("email",)
@@ -50,6 +50,7 @@ class CustomUserAdmin(UserAdmin):
                 "classes": ("wide",),
                 "fields": (
                     "email",
+                    "phone",
                     "password1",
                     "password2",
                     "is_active",
