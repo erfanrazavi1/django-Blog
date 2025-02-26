@@ -28,7 +28,7 @@ class CustomLoginForm(forms.Form):
         email = self.cleaned_data.get("email")
         password = self.cleaned_data.get("password")
         if email and password:
-            user = authenticate(username=email, password=password)  # تغییر username به email
+            user = authenticate(username=email, password=password) 
             if not user:
                 raise forms.ValidationError("ایمیل یا رمز عبور نادرست است.")
             self.user = user

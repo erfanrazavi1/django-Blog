@@ -182,9 +182,11 @@ Header START -->
 						<a class="nav-link" href="{% url "accounts:login" %}">ورود / ثبت نام</a>
 						{% endif %}
 					</li>
+					{% if  request.user.is_authenticated %}
 					<li class="nav-item">
 						<a class="nav-link" href="{% url "accounts:logout" %}">خروج</a>
 					</li>
+					{% endif %}
 				</ul>
 				<!-- Top bar right -->
 				<div class="d-flex align-items-center">
