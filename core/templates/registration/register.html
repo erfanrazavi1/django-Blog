@@ -1,4 +1,4 @@
-{% comment %} {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -445,12 +445,12 @@ Inner intro START -->
 						<!-- Email -->
 						<div class="mb-3">
 							<label class="form-label">پست الکترونیکی</label>
-							<input name="email" type="email" class="form-control"  aria-describedby="emailHelp" placeholder="ایمیل">
-							<small id="emailHelp" class="form-text">ما هرگز ایمیل شما را با دیگران به اشتراک نمی گذاریم.</small>
+							<input name="email" type="email" class ="form-control"   placeholder="ایمیل">
+							<small class="form-text">ما هرگز ایمیل شما را با دیگران به اشتراک نمی گذاریم.</small>
 						</div>
 						<div class="mb-3">
 							<label class="form-label" >شماره تلفن</label>
-							<input name="phone" type="tel" class="form-control"  placeholder="شماره تلفن">
+							<input name="phone" type="text" class="form-control"  placeholder="شماره تلفن">
 							<small class="form-text">ما هرگز شماره تلفن شما را با دیگران به اشتراک نمی گذاریم.</small>
 						</div>
 						<!-- Password -->
@@ -461,13 +461,10 @@ Inner intro START -->
 						</div>
 						<div class="mb-3">
 							<label class="form-label">تایید رمز عبور</label>
-							<input name="confirm_password" type="password" class="form-control" placeholder="*********">
+							<input name="password_confirm" type="password" class="form-control" placeholder="*********">
 						</div>
 						<!-- Checkbox -->
-						<div class="mb-3 form-check">
-							<input type="checkbox" class="form-check-input" id="exampleCheck1">
-							<label class="form-check-label" for="exampleCheck1">من می خواهم برای عضویت در خبرنامه نیز ثبت نام کنم</label>
-						</div>
+						
 						
 						
 						<div class="row align-items-center">
@@ -475,7 +472,7 @@ Inner intro START -->
 								<button type="submit" class="btn btn-success">ثبت نام</button>
 							</div>
 							<div class="col-sm-8 text-sm-end">
-								<span>آیا قبلا ثبت نام کرده اید؟ <a href="signin.html"><u>ورود</u></a></span>
+								<span>آیا قبلا ثبت نام کرده اید؟ <a href="{% url "accounts:login" %}"><u>ورود</u></a></span>
 							</div>
 						</div>
 					</form> 
@@ -596,4 +593,4 @@ JS libraries, plugins and custom scripts -->
 
 </body>
 
-</html> {% endcomment %}
+</html>

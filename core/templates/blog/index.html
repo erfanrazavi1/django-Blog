@@ -176,7 +176,14 @@ Header START -->
 						<a class="nav-link" href="https://www.rtl-theme.com/blogzine-html-template/">خرید قالب</a>
 					</li>
 					<li class="nav-item">
-						{% comment %} <a class="nav-link" href="{% url "login" %}">ورود / ثبت نام</a> {% endcomment %}
+						{% if  request.user.is_authenticated %}
+						<a class="nav-link" href="blog:index">{{ user.get_full_name|default:user.email }}</a>
+						{% else %}
+						<a class="nav-link" href="{% url "accounts:login" %}">ورود / ثبت نام</a>
+						{% endif %}
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url "accounts:logout" %}">خروج</a>
 					</li>
 				</ul>
 				<!-- Top bar right -->
@@ -1313,6 +1320,7 @@ Footer START -->
 			<div class="col-md-4">
 				<!-- Form -->
 				<form class="row row-cols-lg-auto g-2 align-items-center justify-content-end">
+					{% csrf_token %}
 					<div class="col-12">
 						<input type="email" class="form-control" placeholder="ایمیل">
 					</div>
