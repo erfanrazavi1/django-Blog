@@ -1,15 +1,14 @@
 
 from django.shortcuts import render, redirect
 from django.urls import  reverse
-from django.contrib.auth import login, authenticate, logout
-from accounts.forms import RegisterForm, CustomLoginForm
-from accounts.models import CustomUser
+from django.contrib.auth import login, logout
+from accounts.forms import CustomRegisterForm, CustomLoginForm
 from django.contrib import messages
 
 # ثبت‌نام کاربر
 def register_view(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = CustomRegisterForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.set_password(form.cleaned_data["password"])
@@ -17,7 +16,7 @@ def register_view(request):
             messages.success(request, "ثبت‌نام با موفقیت انجام شد! حالا وارد شوید.")
             return redirect(reverse('accounts:login'))
     else:
-        form = RegisterForm()
+        form = CustomRegisterForm()
     return render(request, "registration/register.html", {"form": form})
 
 
