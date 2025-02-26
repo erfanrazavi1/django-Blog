@@ -1,4 +1,4 @@
-{% comment %} {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 
@@ -164,7 +164,7 @@ Header START -->
 								</ul>
 							</li>
 							<li> <a class="dropdown-item" href="404.html">صفحه 404</a></li>
-							<li> <a class="dropdown-item" href="{% url "login" %}">ورود</a></li>
+							<li> <a class="dropdown-item" href="{% url "accounts:login" %}">ورود</a></li>
 							<li> <a class="dropdown-item" href="{% url 'accounts:register' %}">ثبت نام</a></li>
 							<li> <a class="dropdown-item" href="offline.html">غیرفعال</a></li>
 							<!-- Dropdown submenu levels -->
@@ -438,7 +438,7 @@ Inner intro START -->
         <div class="p-4 p-sm-5 bg-primary bg-opacity-10 rounded">
 					<h2>ورود به حساب کاربری</h2>
 					<!-- Form START -->
-					<form class="mt-4" action="{% url "login"%}" method="post">
+					<form class="mt-4" action="{% url "accounts:login"%}" method="post">
 						<!-- Email -->
 						 {% csrf_token %}
 						<div class="mb-3">
@@ -599,4 +599,4 @@ JS libraries, plugins and custom scripts -->
 </script>
 </body>
 
-</html> {% endcomment %}
+</html>
