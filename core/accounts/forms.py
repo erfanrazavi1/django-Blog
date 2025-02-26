@@ -1,10 +1,9 @@
 from django import forms
 from accounts.models import CustomUser
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate
 
 
-class RegisterForm(forms.ModelForm):
+class CustomRegisterForm(forms.ModelForm):
     phone = forms.CharField(label="تلفن همراه", required=False)
     password = forms.CharField(widget=forms.PasswordInput)
     password_confirm = forms.CharField(widget=forms.PasswordInput)
