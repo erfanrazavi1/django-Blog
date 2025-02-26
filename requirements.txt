@@ -1,3 +1,7 @@
 Django==5.1.6
 python-decouple==3.8
 pillow
+
+requests
+PyJWT==2.6.0
+django-allauth==0.58.2
