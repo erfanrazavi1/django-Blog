@@ -32,6 +32,7 @@ class CustomLoginForm(forms.Form):
                 raise forms.ValidationError("ایمیل یا رمز عبور نادرست است.")
             self.user = user
         return self.cleaned_data
+    
 
     def get_user(self):
         return self.user
