@@ -10,7 +10,7 @@ class CustomRegisterForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ['email', 'password', 'password_confirm']
+        fields = ['email', 'phone', 'password', 'password_confirm']
 
     def clean(self):
         cleaned_data = super().clean()
@@ -32,6 +32,9 @@ class CustomLoginForm(forms.Form):
                 raise forms.ValidationError("ایمیل یا رمز عبور نادرست است.")
             self.user = user
         return self.cleaned_data
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request", None)
+        super().__init__(*args, **kwargs)
     
 
     def get_user(self):
