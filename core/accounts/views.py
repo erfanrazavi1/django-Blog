@@ -1,44 +1,33 @@
 
-from django.shortcuts import render, redirect
-from django.urls import  reverse
-from django.contrib.auth import login, logout
 from accounts.forms import CustomRegisterForm, CustomLoginForm
-from django.contrib import messages
-
-# ثبت‌نام کاربر
-def register_view(request):
-    if request.method == "POST":
-        form = CustomRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data["password"])
-            user.save()
-            messages.success(request, "ثبت‌نام با موفقیت انجام شد! حالا وارد شوید.")
-            return redirect(reverse('accounts:login'))
-    else:
-        form = CustomRegisterForm()
-    return render(request, "registration/register.html", {"form": form})
+from django.views.generic import CreateView
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
 
 
-# ورود کاربر
-def login_view(request):
-    if request.user.is_authenticated:
-        return redirect(reverse('blog:index'))
-
-    if request.method == "POST":
-        form = CustomLoginForm(request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            messages.success(request, "ورود موفقیت‌آمیز بود!")
-            return redirect(reverse('blog:index'))
-    else:
-        form = CustomLoginForm()
-    return render(request, "registration/login.html", {"form": form})
+class RegisterView(CreateView):
+    form_class = CustomRegisterForm
+    template_name = 'registration/register.html'
+    success_url = reverse_lazy('accounts:login')
+    
+    def form_valid(self, form):
+        user = form.save(commit=False)
+        user.set_password(form.cleaned_data["password"])
+        user.save()
+        return super().form_valid(form)
 
 
-# خروج کاربر
-def logout_view(request):
-    logout(request)
-    messages.success(request, "شما با موفقیت خارج شدید!")
-    return redirect(reverse('blog:index'))
+class CustomLoginView(LoginView):
+    form_class = CustomLoginForm
+    template_name = 'registration/login.html'
+    redirect_authenticated_user = True
+    next_page = reverse_lazy("blog:index")
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["request"] = self.request  
+        return kwargs
+
+
+class CustomLogoutView(LogoutView):
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
