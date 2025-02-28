@@ -6096,7 +6096,7 @@ textarea.form-control-lg {
   --bs-modal-footer-bg: ;
   --bs-modal-footer-border-color: var(--bs-border-color);
   --bs-modal-footer-border-width: var(--bs-border-width);
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   right: 0;
   z-index: var(--bs-modal-zindex);
@@ -6181,7 +6181,7 @@ textarea.form-control-lg {
   --bs-backdrop-zindex: 1050;
   --bs-backdrop-bg: #000;
   --bs-backdrop-opacity: 0.5;
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   right: 0;
   z-index: var(--bs-backdrop-zindex);
@@ -15918,7 +15918,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   z-index: 0;
   position: relative;
 }
@@ -16574,7 +16574,7 @@ html.font-sm {
   top: -100px;
   width: 1000px;
   height: 1000px;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .rotating-text-badge { 
