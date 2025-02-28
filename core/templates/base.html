@@ -179,11 +179,16 @@ Header START -->
 						<a class="nav-link" href="{% url "accounts:login" %}">ورود / ثبت نام</a>
 						{% endif %}
 					</li>
-					{% if  request.user.is_authenticated %}
-					<li class="nav-item">
-						<a class="nav-link" href="{% url "accounts:logout" %}">خروج</a>
-					</li>
-					{% endif %}
+					{% if request.user.is_authenticated %}
+						<li class="nav-item">
+							<form action="{% url 'accounts:logout' %}" method="post" style="display:inline;">
+								{% csrf_token %}
+								<button type="submit" class="nav-link btn btn-link" style="border: none; background: none; padding: 0; cursor: pointer;">
+									خروج
+								</button>
+							</form>
+						</li>
+						{% endif %}
 				</ul>
 				<!-- Top bar right -->
 				<div class="d-flex align-items-center">
