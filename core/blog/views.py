@@ -19,7 +19,7 @@ class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    
+    paginate_by = 3
     def get_queryset(self):
         return Post.objects.filter(status=True).order_by('-created_date')
 
