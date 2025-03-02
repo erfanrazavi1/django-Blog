@@ -1,108 +1,90 @@
-from django.views.generic import (
-    ListView,
-    DetailView,
-    CreateView,
-    UpdateView,
-    DeleteView,
-    TemplateView,
-    )
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from django.shortcuts import redirect
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.urls import reverse, reverse_lazy
 from django.db.models import F
 from blog.models import Post, Category
 
 class HomeView(TemplateView):
-    """
-    a class based view to show index page
-    """
+    """ Show index page """
     template_name = 'blog/index.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['posts'] = Post.objects.filter(status=True)
         return context
 
 class PostListView(ListView):
-    """
-    a class based view to show all posts
-    """
+    """ Show all posts """
     model = Post
     template_name = 'blog/post_list.html'
     context_object_name = 'posts'
-    ordering = ['-created_date']
+    
     def get_queryset(self):
         return Post.objects.filter(status=True).order_by('-created_date')
 
 class PostDetailView(DetailView):
-    """
-    a class based view to show post detail
-    """
+    """ Show post detail """
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+
     def get_object(self):
         post = super().get_object()
         Post.objects.filter(pk=post.pk).update(views=F('views') + 1)
         post.refresh_from_db()
         return post
 
+class PostPermissionMixin(LoginRequiredMixin, PermissionRequiredMixin):
+    """ Mixin to check permission for Post views """
+    login_url = reverse_lazy('accounts:login')
 
-class CategoryPostListView(LoginRequiredMixin, ListView):
-    """
-    a class based view to show posts by category
-    """
-    model = Post
-    template_name = 'blog/post_list.html'
-    context_object_name = 'posts'
+    def has_permission(self):
+        return self.request.user.is_active and self.request.user.is_staff and super().has_permission()
 
-    def get_queryset(self):
-        category_id = self.kwargs.get('category_id')
-        return Post.objects.filter(category_id=category_id, status=True).order_by('-created_date')
+    def handle_no_permission(self):
+        return redirect('accounts:login')
 
-class CreatePostView(LoginRequiredMixin, CreateView):
+class CreatePostView(PostPermissionMixin, CreateView):
     model = Post
     template_name = 'blog/create_post.html'
     fields = ['title', 'content', 'category']
-    login_url = reverse_lazy('accounts:login') 
+    permission_required = 'blog.add_post'
 
     def form_valid(self, form):
-        if not self.request.user.is_authenticated:
-            return self.handle_no_permission()
-
         form.instance.author = self.request.user.profile
-
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
+
     def get_success_url(self):
-        return reverse_lazy('blog:post-detail', kwargs={'pk': self.object.pk})
+        return reverse('blog:post-detail', kwargs={'pk': self.object.pk})
 
-
-class UpdatePostView(LoginRequiredMixin, UpdateView):
+class UpdatePostView(PostPermissionMixin, UpdateView):
     model = Post
     template_name = 'blog/update_post.html'
     fields = ['title', 'content', 'category']
-    login_url = reverse_lazy('accounts:login')
-    
+    permission_required = 'blog.change_post'
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user.profile, status=True)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['post'] = Post.objects.filter(status=True)
         context['categories'] = Category.objects.all()
         return context
-    def get_queryset(self):
-        return Post.objects.filter(author=self.request.user.profile)
-    def form_valid(self, form):
-        form.save()
-        return redirect('blog:post-list')
 
-class DeletePostView(LoginRequiredMixin, DeleteView):
+    def get_success_url(self):
+        return reverse_lazy('blog:post-list')
+
+class DeletePostView(PostPermissionMixin, DeleteView):
     model = Post
     template_name = 'blog/delete_post.html'
     success_url = reverse_lazy('blog:post-list')
-    login_url = reverse_lazy('accounts:login')
-    
+    permission_required = 'blog.delete_post'
+
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user.profile)
+        return Post.objects.filter(author=self.request.user.profile, status=True)
