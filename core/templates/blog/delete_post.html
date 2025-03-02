@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>حذف پست</h2>
+        <p>آیا مطمئن هستید که می‌خواهید "{{ post.title }}" را حذف کنید؟</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+            <a href="{% url 'blog:post-detail' post.pk %}" class="btn btn-secondary">لغو</a>
+        </form>
+    </div>
+{% endblock %}

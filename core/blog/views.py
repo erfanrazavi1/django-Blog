@@ -6,6 +6,7 @@ from django.views.generic import (
     DeleteView,
     TemplateView,
     )
+from django.shortcuts import redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.db.models import F
@@ -46,7 +47,7 @@ class PostDetailView(DetailView):
         return post
 
 
-class CategoryPostListView(ListView):
+class CategoryPostListView(LoginRequiredMixin, ListView):
     """
     a class based view to show posts by category
     """
@@ -77,9 +78,31 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         context['categories'] = Category.objects.all()
         return context
     def get_success_url(self):
-        return reverse_lazy('blog:post-list')
+        return reverse_lazy('blog:post-detail', kwargs={'pk': self.object.pk})
 
 
+class UpdatePostView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'blog/update_post.html'
+    fields = ['title', 'content', 'category']
+    login_url = reverse_lazy('accounts:login')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['post'] = Post.objects.filter(status=True)
+        context['categories'] = Category.objects.all()
+        return context
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user.profile)
+    def form_valid(self, form):
+        form.save()
+        return redirect('blog:post-list')
 
-
-
+class DeletePostView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'blog/delete_post.html'
+    success_url = reverse_lazy('blog:post-list')
+    login_url = reverse_lazy('accounts:login')
+    
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user.profile)

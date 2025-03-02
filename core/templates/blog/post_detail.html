@@ -69,13 +69,14 @@ Main START -->
 			<div class="col-lg-7 mb-5">
       
 				
-				<!-- Image -->
+				<!-- Image -->{% if post.image %}
 				<figure class="figure mt-2">
 				  <a href="{{post.image.url}}" data-glightbox data-gallery="image-popup">
 		      	<img class="rounded" src="{{post.image.url}}" alt="Image">
 		       </a>
 				  <figcaption class="figure-caption text-center">(عکاس: <a class="text-reset" href="#">pexels.com</a>)</figcaption>
 				</figure>
+				{% endif %}
 
 				<p>{{post.content}}</p>
 
