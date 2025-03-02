@@ -5,3 +5,9 @@ pillow
 requests
 PyJWT==2.6.0
 django-allauth==0.58.2
+
+djangorestframework
+markdown
+django-filter
+
+drf-yasg[validation]

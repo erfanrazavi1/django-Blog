@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    'rest_framework',
+    'drf_yasg',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -185,5 +188,11 @@ SOCIALACCOUNT_PROVIDERS = {
             "key": "",
         }
     }
+}
+
+# pagination settings
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'blog.api.v1.pagination.CustomPagination',
+    'PAGE_SIZE': 10,
 }
 
