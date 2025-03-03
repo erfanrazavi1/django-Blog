@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from blog.models import Post, Category
-from django.urls import reverse
 from accounts.models import Profile
 
 
@@ -16,9 +15,8 @@ class PostListSerializer(serializers.ModelSerializer):
         slug_field='name',
         queryset=Category.objects.all()
     )
-    author = serializers.SlugRelatedField(
-    slug_field="user__email", queryset=Profile.objects.all()
-    )
+    author = serializers.CharField(source="author.user.email", read_only=True)
+
     class Meta:
         model = Post
         fields = ["id", "title", "content", "category", "author", "detail_url", "created_date", "published_date"]
