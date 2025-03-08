@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
     'django_filters',
 ]
@@ -194,5 +195,16 @@ SOCIALACCOUNT_PROVIDERS = {
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'blog.api.v1.pagination.CustomPagination',
     'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
 }
+
+# SWAGGER_SETTINGS = {
+#     "USE_SESSION_AUTH": True,
+#     "LOGIN_URL": "http://localhost:8000/login/",  # مسیر لاگین خودت
+#     "LOGOUT_URL": "http://localhost:8000/logout/",
+# }
+
 
