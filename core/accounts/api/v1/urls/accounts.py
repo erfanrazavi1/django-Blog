@@ -5,17 +5,11 @@ from accounts.api.v1.views import (
     CustomLogoutView,
     CustomTokenObtainPairView,
     ChangePasswordApiView,
-    ProfileApiView,
     )
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
-    
     )
-
-app_name = 'accounts-api-v1'
 
 urlpatterns = [
     path('registration/', RegisterApiView.as_view(), name='registration'),
@@ -31,8 +25,6 @@ urlpatterns = [
     path('jwt/create/', CustomTokenObtainPairView.as_view(), name='jwt-create'),
     path('jwt/refresh/', TokenRefreshView.as_view(), name='jwt-refresh'),
     path('jwt/verify/', TokenVerifyView.as_view(), name='jwt-verify'),
-
-    path('profile/', ProfileApiView.as_view(), name='profile'),
 
 
 ]
