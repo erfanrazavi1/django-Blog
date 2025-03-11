@@ -1,11 +1,21 @@
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.response import Response     
-from accounts.api.v1.serializer import RegistrationSerializer, CustomAuthTokenSerializer
+from accounts.api.v1.serializer import (
+    RegistrationSerializer,
+    CustomAuthTokenSerializer,
+    CustomTokenObtainPairSerializer,
+    ChangePasswordApiSerializer,
+    )
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.views import TokenObtainPairView
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 class RegisterApiView(generics.GenericAPIView):
     serializer_class = RegistrationSerializer
@@ -14,13 +24,10 @@ class RegisterApiView(generics.GenericAPIView):
         serializer = RegistrationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        
-        token, created = Token.objects.get_or_create(user=user)
             
         data = {
             'email': user.email,
             'phone': user.phone,
-            'token': token.key,
             'detail': 'User registered successfully'
         }
         return Response(data, status=status.HTTP_201_CREATED)
@@ -30,7 +37,7 @@ class RegisterApiView(generics.GenericAPIView):
 class CustomObtainAuthToken(ObtainAuthToken):
     serializer_class = CustomAuthTokenSerializer
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
+        serializer = CustomAuthTokenSerializer(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
@@ -50,5 +57,30 @@ class CustomLogoutView(APIView):
             return Response({"message": "Logged out successfully"}, status=status.HTTP_204_NO_CONTENT)
         except Token.DoesNotExist:
             return Response({"error": "Token not found"}, status=400)
+        
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
+
+class ChangePasswordApiView(generics.GenericAPIView):
+    model = User
+    serializer_class = ChangePasswordApiSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
     
+    def put(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP400_BAD_REQUEST)
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            return Response({"detail": "Password changed successfully"}, status=status.HTTP_200_OK)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

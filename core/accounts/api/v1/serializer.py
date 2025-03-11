@@ -4,6 +4,7 @@ import django.contrib.auth.password_validation as validators
 from django.core import exceptions
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 User = get_user_model()
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -17,7 +18,8 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"password": "Passwords do not match."})
         
         try:
-            validators.validate_password(password=data.get('password'))
+            validators.validate_password(password=data.get('password')) 
+            # This will raise a ValidationError if the password is invalid
         except exceptions.ValidationError as e:
             raise exceptions.ValidationError({"password": list(e.messages)})
         return data
@@ -65,6 +67,28 @@ class CustomAuthTokenSerializer(serializers.Serializer):
         attrs['user'] = user
         return attrs
 
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        validated_data = super().validate(attrs)
+        validated_data['email'] = self.user.email
+        validated_data['user_id'] = self.user.id
+        return validated_data
     
     
 
+class ChangePasswordApiSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+    
+    def validate(self, data):
+        if data.get('new_password') != data.get('confirm_password'):
+            raise serializers.ValidationError({"new_password": "Passwords do not match."})
+        
+        try:
+            validators.validate_password(password=data.get('new_password')) 
+            # This will raise a ValidationError if the password is invalid
+        except exceptions.ValidationError as e:
+            raise exceptions.ValidationError({"new_password": list(e.messages)})
+        return data
