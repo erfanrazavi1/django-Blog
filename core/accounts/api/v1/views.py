@@ -97,15 +97,14 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
 
-from django.core.mail import send_mail
+from accounts.api.utils import EmailThread
+from django.core.mail import EmailMessage
 
 class TestEmailSend(generics.GenericAPIView):
     def get(self,request, *args, **kwargs):
-        send_mail(
-            'Subject: Test Email',
-            'This is a test email.',
-            'your_email@example.com',
-            ['recipient_email@example.com'],
-            fail_silently=False,
-            )
+
+        email_obj = EmailMessage('email/index.tpl', {'name': 'Erfan'}, 'erfan6235@gmail.com',to=['erfanr926@gmail.com'])
+
+        EmailThread(email_obj).start()
+
         return Response("email sent")
