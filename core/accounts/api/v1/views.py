@@ -16,6 +16,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from accounts.models import Profile
 from django.shortcuts import get_object_or_404
+from accounts.api.utils import EmailThread
+from django.core.mail import EmailMessage
+
 User = get_user_model()
 
 
@@ -97,8 +100,7 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
 
-from accounts.api.utils import EmailThread
-from django.core.mail import EmailMessage
+
 
 class TestEmailSend(generics.GenericAPIView):
     def get(self,request, *args, **kwargs):
