@@ -127,7 +127,7 @@ class ActivationResendEmailSerializer(serializers.Serializer):
 class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
-    def validate_email(self, value):
+    def validate(self, value):
         try:
             user = User.objects.get(email=value)
         except User.DoesNotExist:
@@ -142,7 +142,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
 
     def validate(self, data):
         if data['password'] != data['confirm_password']:
-            raise serializers.ValidationError({"password": "رمزها یکسان نیستند."})
+            raise serializers.ValidationError({"password": "passwords does not match."})
         try:
             validators.validate_password(data['password'])
         except exceptions.ValidationError as e:

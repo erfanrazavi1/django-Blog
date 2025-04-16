@@ -182,7 +182,7 @@ class ResetPasswordEmailView(generics.GenericAPIView):
     serializer_class = ResetPasswordSerializer
 
     def post(self, request):
-        serializer = self.get_serializer(data=request.data)
+        serializer = ResetPasswordSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = User.objects.get(email=serializer.validated_data['email'])
 
@@ -200,8 +200,8 @@ class SetNewPasswordView(generics.GenericAPIView):
 
     def post(self, request,token):
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-            user = User.objects.get(id=payload['user_id'])
+            decode = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user = User.objects.get(id=decode['user_id'])
         except (jwt.ExpiredSignatureError, jwt.DecodeError, User.DoesNotExist):
             return Response({'error': 'token is invalid or expired'}, status=status.HTTP_400_BAD_REQUEST)
 
