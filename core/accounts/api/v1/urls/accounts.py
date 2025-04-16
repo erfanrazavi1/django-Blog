@@ -5,7 +5,9 @@ from accounts.api.v1.views import (
     CustomLogoutView,
     CustomTokenObtainPairView,
     ChangePasswordApiView,
-    TestEmailSend
+    TestEmailSend,
+    ActivationConfirmEmailView,
+    ActivationResendEmailView,
     )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -17,8 +19,8 @@ urlpatterns = [
 
     #activation
     path('test-email/', TestEmailSend.as_view(), name='test-email'),
-    # path('activation/confirm/', CustomObtainAuthToken.as_view(), name='activate'),
-    # path('activation/resend/', CustomObtainAuthToken.as_view(), name='activate'),
+    path('activation/confirm/<str:token>', ActivationConfirmEmailView.as_view(), name='activation'),
+    path('activation/resend/', ActivationResendEmailView.as_view(), name='activate'),
 
     # token authentication
     path('token/login/', CustomObtainAuthToken.as_view(), name='token-login'),
