@@ -8,6 +8,8 @@ from accounts.api.v1.views import (
     TestEmailSend,
     ActivationConfirmEmailView,
     ActivationResendEmailView,
+    ResetPasswordEmailView,
+    SetNewPasswordView
     )
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -21,6 +23,10 @@ urlpatterns = [
     path('test-email/', TestEmailSend.as_view(), name='test-email'),
     path('activation/confirm/<str:token>', ActivationConfirmEmailView.as_view(), name='activation'),
     path('activation/resend/', ActivationResendEmailView.as_view(), name='activate'),
+
+    #reset pass
+    path('password/reset/', ResetPasswordEmailView.as_view(), name='reset-password'),
+    path('password/reset/confirm/<str:token>/', SetNewPasswordView.as_view(), name='password-reset-confirm'),
 
     # token authentication
     path('token/login/', CustomObtainAuthToken.as_view(), name='token-login'),

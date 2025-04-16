@@ -7,7 +7,9 @@ from accounts.api.v1.serializer import (
     CustomTokenObtainPairSerializer,
     ChangePasswordApiSerializer,
     ProfileSerializer,
-    ActivationResendEmailSerializer
+    ActivationResendEmailSerializer,
+    ResetPasswordSerializer,
+    SetNewPasswordSerializer
     )
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
@@ -173,3 +175,38 @@ class ActivationResendEmailView(generics.GenericAPIView):
     def get_tokens_for_user(self,user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
+    
+
+    
+class ResetPasswordEmailView(generics.GenericAPIView):
+    serializer_class = ResetPasswordSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = User.objects.get(email=serializer.validated_data['email'])
+
+        token = RefreshToken.for_user(user).access_token
+        email_body = render_to_string('email/reset_password_email.tpl', {
+            'token': str(token),
+        })
+        email = EmailMessage('Reset Your Password', email_body, to=[user.email])
+        EmailThread(email).start()
+
+        return Response({'detail': 'Reset password link is send to your email.'}, status=status.HTTP_200_OK)
+
+class SetNewPasswordView(generics.GenericAPIView):
+    serializer_class = SetNewPasswordSerializer
+
+    def post(self, request,token):
+        try:
+            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            user = User.objects.get(id=payload['user_id'])
+        except (jwt.ExpiredSignatureError, jwt.DecodeError, User.DoesNotExist):
+            return Response({'error': 'token is invalid or expired'}, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+
+        return Response({'detail': 'password is changed successfully.'}, status=status.HTTP_200_OK)

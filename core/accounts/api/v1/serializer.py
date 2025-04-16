@@ -123,4 +123,32 @@ class ActivationResendEmailSerializer(serializers.Serializer):
         
         attrs['user'] = user_obj
         return super().validate(attrs)
-        
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        try:
+            user = User.objects.get(email=value)
+        except User.DoesNotExist:
+            raise serializers.ValidationError("this email is does not exist.")
+        if not user.is_verified:
+            raise serializers.ValidationError("email is not verified.")
+        return value
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(write_only=True)
+    confirm_password = serializers.CharField(write_only=True)
+
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError({"password": "رمزها یکسان نیستند."})
+        try:
+            validators.validate_password(data['password'])
+        except exceptions.ValidationError as e:
+            raise serializers.ValidationError({"password": list(e.messages)})
+        return data
+
+    def save(self, user):
+        user.set_password(self.validated_data['password'])
+        user.save()
