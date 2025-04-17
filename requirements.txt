@@ -1,22 +1,32 @@
+# Core Frameworks
 Django==5.1.6
+
+# Configuration and Settings Libraries
 python-decouple==3.8
+
+# Image Processing
 pillow
 
+# Requests and API Interaction
 requests
 PyJWT==2.6.0
+
+# Authentication and User Management
 django-allauth==0.58.2
 
+# APIs and Documentation
 djangorestframework
 djangorestframework-simplejwt
-jdatetime
-
-markdown
 django-filter
-
 drf-yasg[validation]
 
+# Date and Time Management
+jdatetime
+
+# Email Management and Templates
 django-mail-templated
 
+# Code and Documentation Formatting
 black
 docformatter # Format docstrings according to PEP 257 (wrap at 72 chars, clean style)
-
+flake8 # We could just go with Ruff here instead of Flake8

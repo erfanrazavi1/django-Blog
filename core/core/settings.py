@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from decouple import config
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -103,7 +104,6 @@ DATABASES = {
 
 
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -208,14 +208,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# SWAGGER_SETTINGS = {
-#     "USE_SESSION_AUTH": True,
-#     "LOGIN_URL": "http://localhost:8000/login/",  # مسیر لاگین خودت
-#     "LOGOUT_URL": "http://localhost:8000/logout/",
-# }
-
-
-from datetime import timedelta
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
