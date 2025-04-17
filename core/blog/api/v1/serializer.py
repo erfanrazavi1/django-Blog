@@ -6,26 +6,34 @@ from accounts.models import Profile
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ["id", "name"]
+
 
 class PostListSerializer(serializers.ModelSerializer):
     detail_url = serializers.SerializerMethodField(read_only=True)
     category = serializers.SlugRelatedField(
-        many=False,
-        slug_field='name',
-        queryset=Category.objects.all()
+        many=False, slug_field="name", queryset=Category.objects.all()
     )
     author = serializers.CharField(source="author.user.email", read_only=True)
 
     class Meta:
         model = Post
-        fields = ["id", "title", "content", "category", "author", "detail_url", "created_date", "published_date"]
-        read_only_fields = ['author', 'created_date', 'published_date']
+        fields = [
+            "id",
+            "title",
+            "content",
+            "category",
+            "author",
+            "detail_url",
+            "created_date",
+            "published_date",
+        ]
+        read_only_fields = ["author", "created_date", "published_date"]
 
     def get_detail_url(self, obj):
-        request = self.context.get('request')
+        request = self.context.get("request")
         return request.build_absolute_uri(obj.pk)
-    
+
     def to_representation(self, instance):
         request = self.context.get("request")
         rep = super().to_representation(instance)

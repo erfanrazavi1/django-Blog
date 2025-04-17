@@ -17,4 +17,6 @@ drf-yasg[validation]
 
 django-mail-templated
 
+black
+docformatter # Format docstrings according to PEP 257 (wrap at 72 chars, clean style)
 

@@ -2,6 +2,7 @@ from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.exceptions import ImmediateHttpResponse
 from django.shortcuts import redirect
 
+
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     def is_auto_signup_allowed(self, request, sociallogin):
         # اگه ایمیل تأیید شده باشه، مستقیم لاگین کن
@@ -22,6 +23,7 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
                 return
 
             from django.contrib.auth import get_user_model
+
             User = get_user_model()
             try:
                 existing_user = User.objects.get(email=user.email)
