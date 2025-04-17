@@ -29,5 +29,5 @@ class CustomLoginView(LoginView):
 
 
 class CustomLogoutView(LogoutView):
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
