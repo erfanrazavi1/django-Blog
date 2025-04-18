@@ -14,6 +14,7 @@ from django.contrib.auth.mixins import (
 from django.urls import reverse, reverse_lazy
 from django.db.models import F
 from blog.models import Post, Category
+from blog.forms import PostForm
 
 
 class HomeView(TemplateView):
@@ -71,8 +72,8 @@ class PostPermissionMixin(LoginRequiredMixin, PermissionRequiredMixin):
 
 class CreatePostView(PostPermissionMixin, CreateView):
     model = Post
+    form_class = PostForm
     template_name = "blog/create_post.html"
-    fields = ["title", "content", "category"]
     permission_required = "blog.add_post"
 
     def form_valid(self, form):
@@ -90,8 +91,8 @@ class CreatePostView(PostPermissionMixin, CreateView):
 
 class UpdatePostView(PostPermissionMixin, UpdateView):
     model = Post
+    form_class = PostForm
     template_name = "blog/update_post.html"
-    fields = ["title", "content", "category"]
     permission_required = "blog.change_post"
 
     def get_queryset(self):
