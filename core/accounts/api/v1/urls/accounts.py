@@ -16,6 +16,8 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+app_name = "accounts-api-v1"
+
 urlpatterns = [
     path("registration/", RegisterApiView.as_view(), name="registration"),
     # activation

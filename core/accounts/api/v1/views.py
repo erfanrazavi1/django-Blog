@@ -14,7 +14,7 @@ from accounts.api.v1.serializer import (
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from accounts.models import Profile
@@ -30,6 +30,7 @@ User = get_user_model()
 
 
 class RegisterApiView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class = RegistrationSerializer
 
     def post(self, request):
