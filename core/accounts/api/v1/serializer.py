@@ -19,9 +19,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data.get("password") != data.get("confirm_password"):
-            raise serializers.ValidationError(
-                {"password": "Passwords do not match."}
-            )
+            raise serializers.ValidationError({"password": "Passwords do not match."})
 
         try:
             validators.validate_password(password=data.get("password"))
@@ -100,9 +98,7 @@ class ChangePasswordApiSerializer(serializers.Serializer):
             validators.validate_password(password=data.get("new_password"))
             # This will raise a ValidationError if the password is invalid
         except exceptions.ValidationError as e:
-            raise exceptions.ValidationError(
-                {"new_password": list(e.messages)}
-            )
+            raise exceptions.ValidationError({"new_password": list(e.messages)})
         return data
 
 
@@ -134,9 +130,7 @@ class ActivationResendEmailSerializer(serializers.Serializer):
                 {"email": "User with this email does not exist."}
             )
         if user_obj.is_verified:
-            raise serializers.ValidationError(
-                {"email": "User is already verified."}
-            )
+            raise serializers.ValidationError({"email": "User is already verified."})
 
         attrs["user"] = user_obj
         return super().validate(attrs)
@@ -161,9 +155,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
 
     def validate(self, data):
         if data["password"] != data["confirm_password"]:
-            raise serializers.ValidationError(
-                {"password": "passwords does not match."}
-            )
+            raise serializers.ValidationError({"password": "passwords does not match."})
         try:
             validators.validate_password(data["password"])
         except exceptions.ValidationError as e:

@@ -96,9 +96,7 @@ class UpdatePostView(PostPermissionMixin, UpdateView):
     permission_required = "blog.change_post"
 
     def get_queryset(self):
-        return Post.objects.filter(
-            author=self.request.user.profile, status=True
-        )
+        return Post.objects.filter(author=self.request.user.profile, status=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -116,6 +114,4 @@ class DeletePostView(PostPermissionMixin, DeleteView):
     permission_required = "blog.delete_post"
 
     def get_queryset(self):
-        return Post.objects.filter(
-            author=self.request.user.profile, status=True
-        )
+        return Post.objects.filter(author=self.request.user.profile, status=True)

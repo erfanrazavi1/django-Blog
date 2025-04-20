@@ -10,9 +10,7 @@ class Post(models.Model):
     content = models.TextField()
     status = models.BooleanField(default=True)
     views = models.IntegerField(default=0)
-    category = models.ForeignKey(
-        "Category", on_delete=models.SET_NULL, null=True
-    )
+    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     published_date = models.DateTimeField(null=True, blank=True)

@@ -30,3 +30,7 @@ django-mail-templated
 black
 docformatter # Format docstrings according to PEP 257 (wrap at 72 chars, clean style)
 flake8 # We could just go with Ruff here instead of Flake8
+
+# Testing and Quality Assurance
+pytest-django
+pytest

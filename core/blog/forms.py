@@ -1,6 +1,7 @@
 from django import forms
 from blog.models.posts import Post
 
+
 class PostForm(forms.ModelForm):
     """Form for creating and updating posts."""
 

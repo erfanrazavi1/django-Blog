@@ -54,6 +54,4 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     class Meta:
-        verbose_name = (
-            "User"  # To display the name of this model in the admin panel
-        )
+        verbose_name = "User"  # To display the name of this model in the admin panel
