@@ -34,3 +34,4 @@ flake8 # We could just go with Ruff here instead of Flake8
 # Testing and Quality Assurance
 pytest-django
 pytest
+Faker
