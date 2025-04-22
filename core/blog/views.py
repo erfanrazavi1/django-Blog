@@ -115,3 +115,9 @@ class DeletePostView(PostPermissionMixin, DeleteView):
 
     def get_queryset(self):
         return Post.objects.filter(author=self.request.user.profile, status=True)
+
+
+class PostListApiView(TemplateView):
+    """API view to list all posts."""
+
+    template_name = "blog/post_list_api.html"
