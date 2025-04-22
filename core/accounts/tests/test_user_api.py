@@ -5,7 +5,6 @@ import pytest
 
 @pytest.mark.django_db
 class TestUserApi:
-    
     """
     This class contains a series of tests designed to verify the functionality of the user registration, login,
     and logout API endpoints. The test cases cover common scenarios for creating, logging in, and logging out users,
@@ -14,7 +13,7 @@ class TestUserApi:
     Each test method performs a specific task, sends an HTTP request to the respective API endpoint using the
     APIClient, and checks if the returned response matches the expected behavior.
 
-    The test methods included are:
+    The test methods included. are:
     1. `test_register_user_response_status_201`: Verifies that a user can register successfully.
     2. `test_duplicate_email_response_status_400`: Verifies that the system returns an error when attempting
        to register with a duplicate email.
