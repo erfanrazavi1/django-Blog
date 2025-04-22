@@ -9,15 +9,16 @@ def registration_data():
         "phone": "09123456789",
         "password": "hasaniii1234",
         "confirm_password": "hasaniii1234",
-
     }
+
 
 @pytest.fixture
 def login_data():
-    return{
+    return {
         "email": "erfan6235@gmail.com",
         "password": "hasaniii1234",
     }
+
 
 @pytest.fixture
 def user(db):
@@ -28,4 +29,3 @@ def user(db):
         is_verified=True,
         is_staff=True,
     )
-    
