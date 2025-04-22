@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "drf_yasg",
     "django_filters",
     "mail_templated",
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -229,3 +232,7 @@ EMAIL_HOST = "smtp4dev"
 EMAIL_HOST_USER = ""
 EMAIL_HOST_PASSWORD = ""
 EMAIL_PORT = 25
+
+
+# django-cors-headers settings
+CORS_ALLOW_ALL_ORIGINS = True
