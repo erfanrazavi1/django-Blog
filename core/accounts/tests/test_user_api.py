@@ -13,7 +13,7 @@ class TestUserApi:
     Each test method performs a specific task, sends an HTTP request to the respective API endpoint using the
     APIClient, and checks if the returned response matches the expected behavior.
 
-    The test methods included are:
+    The test methods included. are:
     1. `test_register_user_response_status_201`: Verifies that a user can register successfully.
     2. `test_duplicate_email_response_status_400`: Verifies that the system returns an error when attempting
        to register with a duplicate email.
