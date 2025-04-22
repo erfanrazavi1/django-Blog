@@ -5,6 +5,7 @@ import pytest
 
 @pytest.mark.django_db
 class TestUserApi:
+    
     """
     This class contains a series of tests designed to verify the functionality of the user registration, login,
     and logout API endpoints. The test cases cover common scenarios for creating, logging in, and logging out users,
