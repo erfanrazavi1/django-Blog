@@ -1,4 +1,4 @@
-name: Django Project Test 
+name: Django CI with Docker Compose
 
 on:
   push:
@@ -7,14 +7,21 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Setup Docker Compose
-      run: docker compose up -d
-    - name: Run Tests
-      run: docker exec backend-web sh -c "flake8 && pytest ."
+      - name: 📥 Clone repo
+        uses: actions/checkout@v4
+
+      - name: 🐳 Set up Docker Compose
+        run: docker compose up -d --build
+
+      - name: ⏳ Wait for containers to be ready
+        run: sleep 5
+
+      - name: 🧪 Run flake8 and pytest inside container
+        run: docker exec backend-web sh -c "flake8 . && pytest ."
+
+      - name: 📦 Shut down containers
+        run: docker compose down
