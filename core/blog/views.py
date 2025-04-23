@@ -42,6 +42,7 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(status=True).order_by("-created_date")
 
+
 class PostDetailView(DetailView):
     model = Post
     template_name = "blog/post_detail.html"
@@ -57,7 +58,9 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         post = self.get_object()
         context["form"] = CommentForm()
-        context["comments"] = Comment.objects.filter(post=post, parent=None, is_active=True).order_by("-created_at")
+        context["comments"] = Comment.objects.filter(
+            post=post, parent=None, is_active=True
+        ).order_by("-created_at")
         return context
 
     def post(self, request, *args, **kwargs):
