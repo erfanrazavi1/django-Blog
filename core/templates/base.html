@@ -494,6 +494,37 @@ JS libraries, plugins and custom scripts -->
 
 <!-- Template Functions -->
 <script src="{% static 'assets/js/functions.js' %}"></script>
+<script>
+	document.querySelectorAll('.reply-toggle').forEach(btn => {
+		btn.addEventListener('click', function() {
+			const target = document.querySelector(this.dataset.target);
+			if (target.style.display === 'none') {
+				target.style.display = 'block';
+			} else {
+				target.style.display = 'none';
+			}
+		});
+	});
+</script>
+<script>
+	const btn = document.getElementById("toggle-comments-btn");
+	let expanded = false;
+
+	btn?.addEventListener("click", function () {
+		const extraComments = document.querySelectorAll(".extra-comment");
+		if (!expanded) {
+			extraComments.forEach(el => el.classList.remove("d-none"));
+			btn.textContent = "نمایش کمتر";
+			expanded = true;
+		} else {
+			extraComments.forEach(el => el.classList.add("d-none"));
+			btn.textContent = "نمایش بیشتر";
+			expanded = false;
+			window.scrollTo({ top: btn.offsetTop - 200, behavior: 'smooth' });
+		}
+	});
+</script>
+
 </body>
 
 </html>

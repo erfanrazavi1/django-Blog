@@ -16,6 +16,9 @@ from django.db.models import F
 from blog.models import Post, Category
 from blog.forms import PostForm
 
+from comments.forms import CommentForm
+from comments.models import Comment
+
 
 class HomeView(TemplateView):
     """Show index page."""
@@ -39,10 +42,7 @@ class PostListView(ListView):
     def get_queryset(self):
         return Post.objects.filter(status=True).order_by("-created_date")
 
-
 class PostDetailView(DetailView):
-    """Show post detail."""
-
     model = Post
     template_name = "blog/post_detail.html"
     context_object_name = "post"
@@ -52,6 +52,34 @@ class PostDetailView(DetailView):
         Post.objects.filter(pk=post.pk).update(views=F("views") + 1)
         post.refresh_from_db()
         return post
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.get_object()
+        context["form"] = CommentForm()
+        context["comments"] = Comment.objects.filter(post=post, parent=None, is_active=True).order_by("-created_at")
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("accounts:login")
+
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.post = self.object
+
+            comment.parent = form.cleaned_data.get("parent")
+
+            comment.save()
+            return redirect("blog:post-detail", pk=self.object.pk)
+
+        context = self.get_context_data(object=self.object)
+        context["form"] = form
+        return self.render_to_response(context)
 
 
 class PostPermissionMixin(LoginRequiredMixin, PermissionRequiredMixin):
