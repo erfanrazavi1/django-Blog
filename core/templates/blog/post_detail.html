@@ -250,7 +250,7 @@ Main START -->
 							<div>
 								<div class="mb-2">
 									<h5 class="m-0">{{ comment.user.email }}</h5>
-									<span class="me-3 small">{{ comment.created_at }}</span>
+									<span class="me-3 small">{{ comment.created_at|to_jalali }}</span>
 									<a href="javascript:void(0);" class="text-body fw-normal reply-toggle" data-target="#reply-{{ comment.id }}">پاسخ</a>
 								</div>
 								<p>{{ comment.content }}</p>
