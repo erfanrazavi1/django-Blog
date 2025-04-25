@@ -236,3 +236,8 @@ EMAIL_PORT = 25
 
 # django-cors-headers settings
 CORS_ALLOW_ALL_ORIGINS = True
+
+
+# celery config
+
+CELERY_BROKER_URL = "redis://redis:6379/0"

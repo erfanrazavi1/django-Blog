@@ -40,3 +40,7 @@ Faker
 
 # For CORS support
 django-cors-headers
+
+# background processing and caching
+Redis
+celery
