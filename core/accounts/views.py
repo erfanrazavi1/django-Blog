@@ -2,7 +2,9 @@ from accounts.forms import CustomRegisterForm, CustomLoginForm
 from django.views.generic import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
-
+import time
+from django.http import JsonResponse
+from accounts.tasks import send_mail_task
 
 class RegisterView(CreateView):
     form_class = CustomRegisterForm
@@ -31,3 +33,7 @@ class CustomLoginView(LoginView):
 class CustomLogoutView(LogoutView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+def send_mail(request):
+    send_mail_task.delay()
+    return JsonResponse({"status": "ok"})

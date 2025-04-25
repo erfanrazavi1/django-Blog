@@ -44,3 +44,4 @@ django-cors-headers
 # background processing and caching
 Redis
 celery
+django-celery-beat # install in backend-web and worker-celery containers

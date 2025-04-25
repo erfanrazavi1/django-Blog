@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "django_filters",
     "mail_templated",
     "corsheaders",
+    "django_celery_beat", # for periodic tasks and run with admin panel
 ]
 
 MIDDLEWARE = [
@@ -241,3 +242,4 @@ CORS_ALLOW_ALL_ORIGINS = True
 # celery config
 
 CELERY_BROKER_URL = "redis://redis:6379/0"
+
