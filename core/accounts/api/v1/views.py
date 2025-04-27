@@ -24,6 +24,8 @@ from django.core.mail import EmailMessage
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.template.loader import render_to_string
 from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 import jwt
 
@@ -131,6 +133,10 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
 
+    @method_decorator(cache_page(60 * 5))
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def get_object(self):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)
@@ -138,6 +144,7 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
 
 
 class TestEmailSend(generics.GenericAPIView):
+    @method_decorator(cache_page(60 * 5))
     def get(self, request, *args, **kwargs):
         """This is a create token and send it to the email address of
         the user."""

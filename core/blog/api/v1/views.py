@@ -11,6 +11,8 @@ from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from blog.api.v1.pagination import CustomPagination
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 
 
 class PostListViewSet(viewsets.ModelViewSet):
@@ -28,6 +30,11 @@ class PostListViewSet(viewsets.ModelViewSet):
     search_fields = ["title", "content"]
     ordering_fields = ["-title", "id", "published_date"]
 
+    @method_decorator(cache_page(60 * 15))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+    @method_decorator(cache_page(60 * 15))
     def retrieve(self, request, *args, **kwargs):
         post = self.get_object()
         post.views = F("views") + 1
@@ -50,3 +57,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filterset_fields = {
         "name": ["exact", "in"],
     }
+
+    @method_decorator(cache_page(60 * 15))
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
