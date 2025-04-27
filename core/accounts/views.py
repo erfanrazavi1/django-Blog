@@ -7,6 +7,7 @@ from django.views.decorators.cache import cache_page
 from accounts.tasks import send_mail_task
 import requests
 
+
 class RegisterView(CreateView):
     form_class = CustomRegisterForm
     template_name = "registration/register.html"
@@ -40,7 +41,10 @@ def send_mail(request):
     send_mail_task.delay()
     return JsonResponse({"status": "ok"})
 
+
 @cache_page(60 * 5)
 def test(request):
-    response = requests.get("https://5584d8b6-3f5f-4993-ac9d-534c2ae2bd1b.mock.pstmn.io/test/delay/5/")  
+    response = requests.get(
+        "https://5584d8b6-3f5f-4993-ac9d-534c2ae2bd1b.mock.pstmn.io/test/delay/5/"
+    )
     return JsonResponse(response.json())

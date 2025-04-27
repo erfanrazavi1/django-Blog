@@ -1,5 +1,11 @@
 from django.urls import path, include
-from accounts.views import RegisterView, CustomLoginView, CustomLogoutView, send_mail, test
+from accounts.views import (
+    RegisterView,
+    CustomLoginView,
+    CustomLogoutView,
+    send_mail,
+    test,
+)
 
 
 from django.urls import reverse_lazy
@@ -9,7 +15,7 @@ app_name = "accounts"
 
 urlpatterns = [
     path("send-mail/", send_mail, name="send_mail"),
-    path('test/', test, name='test'),
+    path("test/", test, name="test"),
     path("register/", RegisterView.as_view(), name="register"),
     path("login/", CustomLoginView.as_view(), name="login"),
     path(
