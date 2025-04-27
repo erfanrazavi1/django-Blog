@@ -45,3 +45,4 @@ django-cors-headers
 Redis
 celery
 django-celery-beat # install in backend-web and worker-celery containers
+django-redis

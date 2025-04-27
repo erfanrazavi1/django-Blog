@@ -23,8 +23,9 @@ from accounts.api.utils import EmailThread
 from django.core.mail import EmailMessage
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.template.loader import render_to_string
-import jwt
 from django.conf import settings
+
+import jwt
 
 User = get_user_model()
 

@@ -29,6 +29,7 @@ services:
     depends_on:
       - redis
       - backend-web
+  
       
   smtp4dev:
     image: rnwood/smtp4dev:v3
