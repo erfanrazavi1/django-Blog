@@ -165,3 +165,7 @@ class SetNewPasswordSerializer(serializers.Serializer):
     def save(self, user):
         user.set_password(self.validated_data["password"])
         user.save()
+
+
+class EmptySerializer(serializers.Serializer):  # for error handling
+    pass

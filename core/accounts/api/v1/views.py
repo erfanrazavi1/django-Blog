@@ -10,6 +10,7 @@ from accounts.api.v1.serializer import (
     ActivationResendEmailSerializer,
     ResetPasswordSerializer,
     SetNewPasswordSerializer,
+    EmptySerializer,
 )
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
@@ -144,6 +145,10 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
 
 
 class TestEmailSend(generics.GenericAPIView):
+
+    swagger_fake_view = True
+    serializer_class = EmptySerializer
+
     @method_decorator(cache_page(60 * 5))
     def get(self, request, *args, **kwargs):
         """This is a create token and send it to the email address of
@@ -167,6 +172,9 @@ class TestEmailSend(generics.GenericAPIView):
 
 
 class ActivationConfirmEmailView(generics.GenericAPIView):
+    swagger_fake_view = True
+    serializer_class = EmptySerializer
+
     def get(self, request, token, *args, **kwargs):
         try:
             token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])

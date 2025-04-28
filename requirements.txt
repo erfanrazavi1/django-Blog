@@ -46,3 +46,7 @@ Redis
 celery
 django-celery-beat # install in backend-web and worker-celery containers
 django-redis
+
+
+# for production server
+gunicorn
