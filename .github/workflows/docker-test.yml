@@ -24,4 +24,4 @@ jobs:
         run: docker exec backend-web sh -c "flake8 . && pytest ."
 
       - name: 📦 Shut down containers
-        run: docker compose down
+        run: docker compose -f docker-compose-stage.yml down
