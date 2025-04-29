@@ -23,6 +23,29 @@ services:
       - DEBUG=False
     depends_on:
       - redis
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: erfDB
+      POSTGRES_USER: erfan6235@gmail.com
+      POSTGRES_PASSWORD: hasaniii1234
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  pgadmin: # run postgres admin gui
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: erfan6235@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: hasaniii1234
+    depends_on:
+      - db
+    
   worker-celery:
     build: .
     container_name: worker-celery
@@ -65,6 +88,8 @@ services:
       - redis
 
 
+
 volumes:
   static_volume:
   media_volume:
+  postgres_data:

@@ -22,7 +22,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         user = CustomUser.objects.create_user(
             email=self.fake.email(),
-            phone=self.fake.phone_number(),
+            phone=self.fake.phone_number()[:11],
             password=self.fake.password(),
             is_verified=True,
             is_staff=False,
