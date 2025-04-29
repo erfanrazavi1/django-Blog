@@ -50,3 +50,7 @@ django-redis
 
 # for production server
 gunicorn
+
+
+# for database support
+psycopg2-binary
